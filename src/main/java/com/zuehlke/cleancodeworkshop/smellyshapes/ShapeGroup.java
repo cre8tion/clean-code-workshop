@@ -14,20 +14,20 @@ public class ShapeGroup extends ComplexShape {
     }
 
     public void add(Shape shape) {
-        if (!readOnly) {
-            int newSize = size + 1;
-            if (newSize > shapes.length) {
-                Shape[] newShapes = new Shape[shapes.length + 10];
-                for (int i = 0; i < size; i++) {
-                    newShapes[i] = shapes[i];
-                }
-                shapes = newShapes;
-            }
+        if (readOnly || contains(shape)) {
+            return;
+        }
 
-            if (contains(shape)) {
-                return;
-            }
-            shapes[size++] = shape;
+        ensureThereIsSpaceForTheShape();
+
+        shapes[size++] = shape;
+    }
+
+    private void ensureThereIsSpaceForTheShape() {
+        if(size + 1 > shapes.length) {
+            Shape[] newShapes = new Shape[shapes.length + 10];
+            System.arraycopy(shapes, 0, newShapes, 0, size);
+            shapes = newShapes;
         }
     }
 
