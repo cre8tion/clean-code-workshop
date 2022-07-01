@@ -1,16 +1,25 @@
 package com.zuehlke.cleancodeworkshop.smellyshapes;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class ShapeGroup implements Shape {
 
-    Shape[] shapes = new Shape[10];
+    Set<Shape> shapesSet = new HashSet<>();
     int size = 0;
     protected boolean readOnly = false;
 
     public ShapeGroup() {}
 
     public ShapeGroup(Shape[] shapes, boolean readOnly) {
-        this.shapes = shapes;
+        this.shapesSet = Set.of(shapes);
         this.size = shapes.length;
+        this.readOnly = readOnly;
+    }
+
+    public ShapeGroup(Set<Shape> shapes, boolean readOnly) {
+        this.shapesSet = shapes;
+        this.size = shapes.size();
         this.readOnly = readOnly;
     }
 
@@ -18,38 +27,16 @@ public class ShapeGroup implements Shape {
         if (readOnly || contains(shape)) {
             return;
         }
-
-        ensureThereIsSpaceForTheShape();
-
-        shapes[size++] = shape;
-    }
-
-    private void ensureThereIsSpaceForTheShape() {
-        if(size + 1 > shapes.length) {
-            Shape[] newShapes = new Shape[shapes.length + 10];
-            System.arraycopy(shapes, 0, newShapes, 0, size);
-            shapes = newShapes;
-        }
+        this.shapesSet.add(shape);
+        size++;
     }
 
     public boolean contains(Shape shape) {
-        for (int i = 0; i < size; i++) {
-            if (shapes[i].equals(shape)) {
-                return true;
-            }
-        }
-        return false;
+        return shapesSet.contains(shape);
     }
 
     public boolean contains(int x, int y) {
-        for (Shape shape : shapes) {
-            if (shape != null) {
-                if (shape.contains(x, y)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return shapesSet.stream().anyMatch(s -> s.contains(x, y));
     }
 
     public void setReadOnly(boolean readOnly) {
@@ -59,9 +46,7 @@ public class ShapeGroup implements Shape {
     public String toXml() {
         StringBuilder builder = new StringBuilder();
         builder.append("<shapegroup>\n");
-        for (int i = 0; i < this.size; i++) {
-            builder.append(this.shapes[i].toXml());
-        }
+        this.shapesSet.forEach(shape -> builder.append(shape.toXml()));
         builder.append("</shapegroup>\n");
         return builder.toString();
     }
