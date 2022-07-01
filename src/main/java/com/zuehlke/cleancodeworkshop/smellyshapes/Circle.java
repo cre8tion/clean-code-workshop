@@ -1,6 +1,6 @@
 package com.zuehlke.cleancodeworkshop.smellyshapes;
 
-public class Circle extends AbstractShape {
+public class Circle implements Shape {
 
     private int x;
     private int y;
@@ -62,5 +62,15 @@ public class Circle extends AbstractShape {
                 + " RGB=" + this.color.getRed() + ","
                 + this.color.getGreen() + ","
                 + this.color.getBlue();
+    }
+
+    public String toXml() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<circle");
+        builder.append(" x=\"" + this.getX() + "\"");
+        builder.append(" y=\"" + this.getY() + "\"");
+        builder.append(" radius=\"" + this.getRadius() + "\"");
+        builder.append(" />\n");
+        return builder.toString();
     }
 }

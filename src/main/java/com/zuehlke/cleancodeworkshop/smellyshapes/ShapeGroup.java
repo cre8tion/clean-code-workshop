@@ -1,6 +1,6 @@
 package com.zuehlke.cleancodeworkshop.smellyshapes;
 
-public class ShapeGroup extends AbstractShape {
+public class ShapeGroup implements Shape {
 
     Shape[] shapes = new Shape[10];
     int size = 0;
@@ -54,5 +54,15 @@ public class ShapeGroup extends AbstractShape {
 
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
+    }
+
+    public String toXml() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<shapegroup>\n");
+        for (int i = 0; i < this.size; i++) {
+            builder.append(this.shapes[i].toXml());
+        }
+        builder.append("</shapegroup>\n");
+        return builder.toString();
     }
 }
