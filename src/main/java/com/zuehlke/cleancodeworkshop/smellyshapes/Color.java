@@ -57,10 +57,18 @@ public class Color {
 
     public String getColorFormatted(boolean includeHexAndRGB) {
         if (includeHexAndRGB) {
-            return colorAsText + " " + colorAsHex + " " + colorAsRGB_Red + ":" + colorAsRGB_Green + ":" + colorAsRGB_Blue;
+            return toStringIncludingHexCode();
         } else {
-            return colorAsText;
+            return toString();
         }
+    }
+
+    public String toString() {
+        return colorAsText;
+    }
+
+    public String toStringIncludingHexCode() {
+        return colorAsText + " " + colorAsHex + " " + colorAsRGB_Red + ":" + colorAsRGB_Green + ":" + colorAsRGB_Blue;
     }
 
     public String getColorAsHex() {
